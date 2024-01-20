@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
@@ -73,7 +74,18 @@ public class Module {
     // On first cycle, reset relative turn encoder
     // Wait until absolute angle is nonzero in case it wasn't initialized yet
     if (turnRelativeOffset == null && inputs.turnAbsolutePosition.getRadians() != 0.0) {
+      // turnRelativeOffset = inputs.turnAbsolutePosition.minus(inputs.turnPosition);
       turnRelativeOffset = inputs.turnAbsolutePosition.minus(inputs.turnPosition);
+      DriverStation.reportError(
+          "Drive/Module"
+              + Integer.toString(index)
+              + "/TurnROffset:    "
+              + turnRelativeOffset.getRadians()
+              + "   "
+              + inputs.turnAbsolutePosition
+              + "    "
+              + inputs.turnPosition,
+          false);
     }
 
     // Run closed loop turn control
@@ -139,14 +151,14 @@ public class Module {
     io.setTurnBrakeMode(enabled);
   }
 
-  /** Returns the current turn angle of the module. */
   public Rotation2d getAngle() {
     if (turnRelativeOffset == null) {
       return new Rotation2d();
     } else {
-      return inputs.turnPosition.plus(turnRelativeOffset);
+      return new Rotation2d(inputs.turnPosition.plus(turnRelativeOffset).getRadians() % Math.PI);
     }
   }
+  /** Returns the current turn angle of the module. */
 
   /** Returns the current drive position of the module in meters. */
   public double getPositionMeters() {
