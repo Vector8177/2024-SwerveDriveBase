@@ -75,8 +75,7 @@ public class LocalADStarAK implements Pathfinder {
   /**
    * Set the goal position to pathfind to
    *
-   * @param goalPosition Goal position on the field. f this is within an obstacle it will be
-moved
+   * @param goalPosition Goal position on the field. f this is within an obstacle it will be moved
    *     to the nearest non-obstacle node.
    */
   @Override
@@ -89,8 +88,7 @@ moved
   /**
    * Set the dynamic obstacles that should be avoided while pathfinding.
    *
-   * @param obs A List of Translation2d pairs representing obstacles. Each Translation2d
-represents
+   * @param obs A List of Translation2d pairs representing obstacles. Each Translation2d represents
    *     opposite corners of a bounding box.
    * @param currentRobotPos The current position of the robot. This is needed to change the start
    *     position of the path to properly avoid obstacles
