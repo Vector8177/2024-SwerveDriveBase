@@ -5,9 +5,12 @@ import org.littletonrobotics.junction.AutoLog;
 public interface ShooterIO {
   @AutoLog
   public static class ShooterIOInputs {
-    public double shooterVelocityRadPerSec = 0.0;
-    public double shooterAppliedVolts = 0.0;
-    public double[] shooterCurrentAmps = new double[] {};
+    public double shooter0VelocityRadPerSec = 0.0;
+    public double shooter1VelocityRadPerSec = 0.0;
+    public double shooter0AppliedVolts = 0.0;
+    public double shooter1AppliedVolts = 0.0;
+    public double[] shooter0CurrentAmps = new double[] {};
+    public double[] shooter1CurrentAmps = new double[] {};
   }
 
   public default void updateInputs(ShooterIOInputs inputs) {}

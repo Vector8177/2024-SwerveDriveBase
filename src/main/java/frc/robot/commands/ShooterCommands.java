@@ -12,7 +12,7 @@ public class ShooterCommands {
       Shooter shooter, DoubleSupplier lTrigger, DoubleSupplier rTrigger) {
     return Commands.run(
         () -> {
-          shooter.setMotor(rTrigger.getAsDouble() - lTrigger.getAsDouble());
+          shooter.setMotor(rTrigger.getAsDouble() * 11 - lTrigger.getAsDouble() * 11);
         },
         shooter);
   }

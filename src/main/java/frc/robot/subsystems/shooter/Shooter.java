@@ -16,7 +16,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getVelocity() {
-    return inputs.shooterVelocityRadPerSec;
+    return inputs.shooter0VelocityRadPerSec;
   }
 
   @Override

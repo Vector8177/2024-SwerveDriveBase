@@ -6,38 +6,56 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.util.Units;
 
 public class ShooterIOSparkMax implements ShooterIO {
-  private final CANSparkMax shooterSparkMax;
-  private final RelativeEncoder shooterEncoder;
+  private final CANSparkMax shooter0SparkMax;
+  private final RelativeEncoder shooter0Encoder;
+  private final CANSparkMax shooter1SparkMax;
+  private final RelativeEncoder shooter1Encoder;
 
   public ShooterIOSparkMax() {
-    shooterSparkMax = new CANSparkMax(20, MotorType.kBrushless);
+    shooter0SparkMax = new CANSparkMax(31, MotorType.kBrushless);
+    shooter1SparkMax = new CANSparkMax(32, MotorType.kBrushless);
 
-    shooterSparkMax.restoreFactoryDefaults();
-    shooterSparkMax.setCANTimeout(250);
+    shooter0SparkMax.restoreFactoryDefaults();
+    shooter0SparkMax.setCANTimeout(250);
+    shooter1SparkMax.restoreFactoryDefaults();
+    shooter1SparkMax.setCANTimeout(250);
 
-    shooterSparkMax.setSmartCurrentLimit(20);
+    shooter0SparkMax.setSmartCurrentLimit(20);
+    shooter1SparkMax.setSmartCurrentLimit(20);
 
-    shooterEncoder = shooterSparkMax.getEncoder();
-    shooterSparkMax.enableVoltageCompensation(12.0);
+    shooter0Encoder = shooter0SparkMax.getEncoder();
+    shooter0SparkMax.enableVoltageCompensation(12.0);
+    shooter1Encoder = shooter1SparkMax.getEncoder();
+    shooter1SparkMax.enableVoltageCompensation(12.0);
 
-    shooterEncoder.setMeasurementPeriod(50);
+    shooter0Encoder.setMeasurementPeriod(50);
 
-    shooterSparkMax.burnFlash();
+    shooter1SparkMax.follow(shooter0SparkMax);
+    shooter1SparkMax.setInverted(true);
+
+    shooter0SparkMax.burnFlash();
+    shooter1SparkMax.burnFlash();
   }
 
   @Override
   public void updateInputs(ShooterIOInputs inputs) {
     // TODO Auto-generated method stub
-    inputs.shooterAppliedVolts =
-        shooterSparkMax.getAppliedOutput() * shooterSparkMax.getBusVoltage();
-    inputs.shooterCurrentAmps = new double[] {shooterSparkMax.getOutputCurrent()};
+    inputs.shooter0AppliedVolts =
+        shooter0SparkMax.getAppliedOutput() * shooter0SparkMax.getBusVoltage();
+    inputs.shooter0CurrentAmps = new double[] {shooter0SparkMax.getOutputCurrent()};
 
-    inputs.shooterVelocityRadPerSec =
-        Units.rotationsPerMinuteToRadiansPerSecond(shooterEncoder.getVelocity());
+    inputs.shooter1VelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooter1Encoder.getVelocity());
+    inputs.shooter1AppliedVolts =
+        shooter1SparkMax.getAppliedOutput() * shooter1SparkMax.getBusVoltage();
+    inputs.shooter1CurrentAmps = new double[] {shooter1SparkMax.getOutputCurrent()};
+
+    inputs.shooter1VelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooter1Encoder.getVelocity());
   }
 
   @Override
   public void setShooterVoltage(double volts) {
-    shooterSparkMax.setVoltage(volts);
+    shooter0SparkMax.setVoltage(volts);
   }
 }
