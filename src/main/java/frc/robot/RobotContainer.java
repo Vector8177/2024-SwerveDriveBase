@@ -14,6 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -111,6 +112,10 @@ public class RobotContainer {
     //     Commands.startEnd(
     //             () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
     //         .withTimeout(5.0));
+    NamedCommands.registerCommand(
+        "Run Intake Max",
+        Commands.startEnd(() -> shooter.setMotor(1.0), shooter::stop, shooter).withTimeout(10.0));
+
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up feedforward characterization

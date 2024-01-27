@@ -58,4 +58,9 @@ public class ShooterIOSparkMax implements ShooterIO {
   public void setShooterVoltage(double volts) {
     shooter0SparkMax.setVoltage(volts);
   }
+
+  @Override
+  public void stop() {
+    shooter0SparkMax.setVoltage(0);
+  }
 }

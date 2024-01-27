@@ -19,6 +19,10 @@ public class Shooter extends SubsystemBase {
     return inputs.shooter0VelocityRadPerSec;
   }
 
+  public void stop() {
+    io.stop();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
