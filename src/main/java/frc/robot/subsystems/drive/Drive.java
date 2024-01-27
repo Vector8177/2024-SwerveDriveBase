@@ -119,7 +119,7 @@ public class Drive extends SubsystemBase {
       // with the change in angle since the last loop cycle.
       twist =
           new Twist2d(
-              twist.dx, twist.dy, gyroInputs.yawPosition.minus(lastGyroRotation).getRadians());
+              twist.dx, twist.dy, -gyroInputs.yawPosition.minus(lastGyroRotation).getRadians());
       lastGyroRotation = gyroInputs.yawPosition;
     }
     // Apply the twist (change since last loop cycle) to the current pose
