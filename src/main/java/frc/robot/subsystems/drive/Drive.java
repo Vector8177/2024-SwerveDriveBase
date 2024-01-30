@@ -35,7 +35,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
-  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
+  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(2);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(20.75);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(20.75);
   private static final double DRIVE_BASE_RADIUS =
@@ -119,7 +119,7 @@ public class Drive extends SubsystemBase {
       // with the change in angle since the last loop cycle.
       twist =
           new Twist2d(
-              twist.dx, twist.dy, -gyroInputs.yawPosition.minus(lastGyroRotation).getRadians());
+              twist.dx, twist.dy, gyroInputs.yawPosition.minus(lastGyroRotation).getRadians());
       lastGyroRotation = gyroInputs.yawPosition;
     }
     // Apply the twist (change since last loop cycle) to the current pose

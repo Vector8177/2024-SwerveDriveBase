@@ -114,7 +114,7 @@ public class RobotContainer {
     //         .withTimeout(5.0));
     NamedCommands.registerCommand(
         "Run Intake Max",
-        Commands.startEnd(() -> shooter.setMotor(1.0), shooter::stop, shooter).withTimeout(10.0));
+        Commands.startEnd(() -> shooter.setMotor(20.0), shooter::stop, shooter).withTimeout(1.0));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -170,7 +170,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return autoChooser.get();
-    return null;
+    return autoChooser.get();
+    // return null;
   }
 }
