@@ -6,15 +6,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Run Intake Max"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "TeleOp"
+            "pathName": "Bilbo"
           }
         }
       ]
