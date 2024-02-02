@@ -132,9 +132,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -applyDeadband(controller.getLeftY()),
+            () -> -applyDeadband(controller.getLeftX()),
+            () -> -applyDeadband(controller.getRightX())));
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     controller
         .b()
@@ -159,5 +159,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  private double applyDeadband(double controllerValue) {
+    if (controllerValue < .3 && controllerValue > -.3) {
+      return 0;
+    }
+    return controllerValue;
   }
 }
