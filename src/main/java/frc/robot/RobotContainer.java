@@ -59,10 +59,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOSparkMax(0),
                 new ModuleIOSparkMax(1),
-                new ModuleIOSparkMax(2),
-                new ModuleIOSparkMax(3));
+                new ModuleIOSparkMax(3),
+                new ModuleIOSparkMax(0),
+                new ModuleIOSparkMax(2));
         // flywheel = new Flywheel(new FlywheelIOSparkMax());
         // drive = new Drive(
         // new GyroIOPigeon2(),
@@ -132,9 +132,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -applyDeadband(controller.getLeftY()),
-            () -> -applyDeadband(controller.getLeftX()),
-            () -> -applyDeadband(controller.getRightX())));
+            () -> applyDeadband(controller.getLeftY()),
+            () -> applyDeadband(controller.getLeftX()),
+            () -> applyDeadband(controller.getRightX())));
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     controller
         .b()
