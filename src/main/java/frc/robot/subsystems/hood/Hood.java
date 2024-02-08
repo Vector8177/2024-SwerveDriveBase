@@ -14,16 +14,8 @@ public class Hood extends SubsystemBase {
     // TODO
   }
 
-  public void setHoodRollerSpeed(double speed) {
-    // TODO
-  }
-
   public double getPivotVelocity() {
     return inputs.hoodPivotVelocityRadPerSec;
-  }
-
-  public double getRollerVelocity() {
-    return inputs.hoodRollerVelocityRadPerSec;
   }
 
   @Override
