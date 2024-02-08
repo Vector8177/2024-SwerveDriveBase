@@ -7,39 +7,39 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 
 public class HoodIOSparkMax implements HoodIO {
-  private final CANSparkMax hoodSparkMax;
-  private final RelativeEncoder hoodEncoder;
+  private final CANSparkMax hoodPivotSparkMax;
+  private final RelativeEncoder hoodPivotEncoder;
 
   public HoodIOSparkMax() {
-    hoodSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
+    hoodPivotSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
 
-    hoodSparkMax.restoreFactoryDefaults();
-    hoodSparkMax.setCANTimeout(250);
+    hoodPivotSparkMax.restoreFactoryDefaults();
+    hoodPivotSparkMax.setCANTimeout(250);
 
-    hoodEncoder = hoodSparkMax.getEncoder();
-    hoodSparkMax.enableVoltageCompensation(12d);
+    hoodPivotEncoder = hoodPivotSparkMax.getEncoder();
+    hoodPivotSparkMax.enableVoltageCompensation(12d);
 
-    hoodEncoder.setMeasurementPeriod(50);
+    hoodPivotEncoder.setMeasurementPeriod(50);
 
-    hoodSparkMax.burnFlash();
+    hoodPivotSparkMax.burnFlash();
   }
 
   @Override
   public void updateInputs(HoodIOInputs inputs) {
     inputs.hoodPivotAppliedVolts =
-        hoodSparkMax.getAppliedOutput() * hoodSparkMax.getBusVoltage();
+        hoodPivotSparkMax.getAppliedOutput() * hoodPivotSparkMax.getBusVoltage();
     inputs.hoodPivotVelocityRadPerSec =
-        Units.rotationsPerMinuteToRadiansPerSecond(hoodEncoder.getVelocity());
-    inputs.hoodPivotCurrentAmps = new double[] {hoodSparkMax.getOutputCurrent()};
+        Units.rotationsPerMinuteToRadiansPerSecond(hoodPivotEncoder.getVelocity());
+    inputs.hoodPivotCurrentAmps = new double[] {hoodPivotSparkMax.getOutputCurrent()};
   }
 
   @Override
   public void setHoodPivotVoltage(double volts) {
-    hoodSparkMax.setVoltage(volts);
+    hoodPivotSparkMax.setVoltage(volts);
   }
 
   @Override
   public void stop() {
-    hoodSparkMax.setVoltage(0);
+    hoodPivotSparkMax.setVoltage(0);
   }
 }
