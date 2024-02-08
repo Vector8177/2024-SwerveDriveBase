@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterPositionVelocity(){
-    return (inputs.shooterLeftPivotVelocityRadPerSec + inputs.shooterRightPivotVelocityRadPerSec) / 2d;
+    return inputs.shooterPivotVelocityRadPerSec;
   }
 
   public double getShooterFeederVelocity(){
