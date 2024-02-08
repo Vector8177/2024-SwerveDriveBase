@@ -110,7 +110,7 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
    */
   public double beta(int j) {
     // to make -0.0 print as 0.0
-    if (Math.abs(beta.get(j, 0)) < 1E-4) return 0.0;
+    if (Math.abs(beta.get(j, 0)) < 1E-4) return 0d;
     return beta.get(j, 0);
   }
 
@@ -130,8 +130,8 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
    *     0 and 1
    */
   public double R2() {
-    if (sst == 0.0) return 1.0; // constant function
-    return 1.0 - sse / sst;
+    if (sst == 0d) return 1d; // constant function
+    return 1d - sse / sst;
   }
 
   /**
@@ -142,7 +142,7 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
    */
   public double predict(double x) {
     // horner's method
-    double y = 0.0;
+    double y = 0d;
     for (int j = degree; j >= 0; j--) y = beta(j) + (x * y);
     return y;
   }
@@ -178,12 +178,12 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
     double EPSILON = 1E-5;
     int maxDegree = Math.max(this.degree(), that.degree());
     for (int j = maxDegree; j >= 0; j--) {
-      double term1 = 0.0;
-      double term2 = 0.0;
+      double term1 = 0d;
+      double term2 = 0d;
       if (this.degree() >= j) term1 = this.beta(j);
       if (that.degree() >= j) term2 = that.beta(j);
-      if (Math.abs(term1) < EPSILON) term1 = 0.0;
-      if (Math.abs(term2) < EPSILON) term2 = 0.0;
+      if (Math.abs(term1) < EPSILON) term1 = 0d;
+      if (Math.abs(term2) < EPSILON) term2 = 0d;
       if (term1 < term2) return -1;
       else if (term1 > term2) return +1;
     }

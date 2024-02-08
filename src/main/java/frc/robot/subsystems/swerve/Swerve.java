@@ -11,7 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
@@ -34,7 +34,7 @@ import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-public class Drive extends SubsystemBase {
+public class Swerve extends SubsystemBase {
   private static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(20.75);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(20.75);
@@ -50,7 +50,7 @@ public class Drive extends SubsystemBase {
   private Pose2d pose = new Pose2d();
   private Rotation2d lastGyroRotation = new Rotation2d();
 
-  public Drive(
+  public Swerve(
       GyroIO gyroIO,
       ModuleIO flModuleIO,
       ModuleIO frModuleIO,
@@ -178,11 +178,11 @@ public class Drive extends SubsystemBase {
 
   /** Returns the average drive velocity in radians/sec. */
   public double getCharacterizationVelocity() {
-    double driveVelocityAverage = 0.0;
+    double driveVelocityAverage = 0d;
     for (var module : modules) {
       driveVelocityAverage += module.getCharacterizationVelocity();
     }
-    return driveVelocityAverage / 4.0;
+    return driveVelocityAverage / 4d;
   }
 
   /** Returns the module states (turn angles and drive velocities) for all of the modules. */
@@ -224,10 +224,10 @@ public class Drive extends SubsystemBase {
   /** Returns an array of module translations. */
   public static Translation2d[] getModuleTranslations() {
     return new Translation2d[] {
-      new Translation2d(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0),
-      new Translation2d(TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0),
-      new Translation2d(-TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0),
-      new Translation2d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0)
+      new Translation2d(TRACK_WIDTH_X / 2d, TRACK_WIDTH_Y / 2d),
+      new Translation2d(TRACK_WIDTH_X / 2d, -TRACK_WIDTH_Y / 2d),
+      new Translation2d(-TRACK_WIDTH_X / 2d, TRACK_WIDTH_Y / 2d),
+      new Translation2d(-TRACK_WIDTH_X / 2d, -TRACK_WIDTH_Y / 2d)
     };
   }
 }

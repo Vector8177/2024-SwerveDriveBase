@@ -4,63 +4,125 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants;
 
 public class ShooterIOSparkMax implements ShooterIO {
-  private final CANSparkMax shooter0SparkMax;
-  private final RelativeEncoder shooter0Encoder;
-  private final CANSparkMax shooter1SparkMax;
-  private final RelativeEncoder shooter1Encoder;
+  private final CANSparkMax shooterTopFixedSparkMax;
+  private final RelativeEncoder shooterTopFixedEncoder;
+  private final CANSparkMax shooterBottomFixedSparkMax;
+  private final RelativeEncoder shooterBottomFixedEncoder;
+  private final CANSparkMax shooterLeftPivotSparkMax;
+  private final RelativeEncoder shooterLeftPivotEncoder;
+  private final CANSparkMax shooterRightPivotSparkMax;
+  private final RelativeEncoder shooterRightPivotEncoder;
+  private final CANSparkMax shooterFeederSparkMax;
+  private final RelativeEncoder shooterFeederEncoder;
 
   public ShooterIOSparkMax() {
-    shooter0SparkMax = new CANSparkMax(31, MotorType.kBrushless);
-    shooter1SparkMax = new CANSparkMax(32, MotorType.kBrushless);
+    shooterTopFixedSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
+    shooterBottomFixedSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
+    shooterLeftPivotSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
+    shooterRightPivotSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
+    shooterFeederSparkMax = new CANSparkMax(Constants.placeHolderMotorID, MotorType.kBrushless);
 
-    shooter0SparkMax.restoreFactoryDefaults();
-    shooter0SparkMax.setCANTimeout(250);
-    shooter1SparkMax.restoreFactoryDefaults();
-    shooter1SparkMax.setCANTimeout(250);
+    shooterTopFixedSparkMax.restoreFactoryDefaults();
+    shooterTopFixedSparkMax.setCANTimeout(250);
+    shooterBottomFixedSparkMax.restoreFactoryDefaults();
+    shooterBottomFixedSparkMax.setCANTimeout(250);
+    shooterLeftPivotSparkMax.restoreFactoryDefaults();
+    shooterLeftPivotSparkMax.setCANTimeout(250);
+    shooterRightPivotSparkMax.restoreFactoryDefaults();
+    shooterRightPivotSparkMax.setCANTimeout(250);
+    shooterFeederSparkMax.restoreFactoryDefaults();
+    shooterFeederSparkMax.setCANTimeout(250);
 
-    shooter0SparkMax.setSmartCurrentLimit(20);
-    shooter1SparkMax.setSmartCurrentLimit(20);
+    shooterTopFixedSparkMax.setSmartCurrentLimit(20);
+    shooterBottomFixedSparkMax.setSmartCurrentLimit(20);
+    shooterLeftPivotSparkMax.setSmartCurrentLimit(20);
+    shooterRightPivotSparkMax.setSmartCurrentLimit(20);
+    shooterFeederSparkMax.setSmartCurrentLimit(20);
 
-    shooter0Encoder = shooter0SparkMax.getEncoder();
-    shooter0SparkMax.enableVoltageCompensation(12.0);
-    shooter1Encoder = shooter1SparkMax.getEncoder();
-    shooter1SparkMax.enableVoltageCompensation(12.0);
+    shooterTopFixedEncoder = shooterTopFixedSparkMax.getEncoder();
+    shooterTopFixedSparkMax.enableVoltageCompensation(12d);
+    shooterBottomFixedEncoder = shooterBottomFixedSparkMax.getEncoder();
+    shooterBottomFixedSparkMax.enableVoltageCompensation(12d);
+    shooterLeftPivotEncoder = shooterLeftPivotSparkMax.getEncoder();
+    shooterLeftPivotSparkMax.enableVoltageCompensation(12d);
+    shooterRightPivotEncoder = shooterRightPivotSparkMax.getEncoder();
+    shooterRightPivotSparkMax.enableVoltageCompensation(12d);
+    shooterFeederEncoder = shooterFeederSparkMax.getEncoder();
+    shooterFeederSparkMax.enableVoltageCompensation(12d);
 
-    shooter0Encoder.setMeasurementPeriod(50);
+    shooterTopFixedEncoder.setMeasurementPeriod(50);
+    shooterBottomFixedEncoder.setMeasurementPeriod(50);
+    shooterLeftPivotEncoder.setMeasurementPeriod(50);
+    shooterRightPivotEncoder.setMeasurementPeriod(50);
+    shooterFeederEncoder.setMeasurementPeriod(50);
 
-    shooter1SparkMax.follow(shooter0SparkMax);
-    shooter1SparkMax.setInverted(true);
+    shooterRightPivotSparkMax.follow(shooterLeftPivotSparkMax);
+    shooterRightPivotSparkMax.setInverted(true);
 
-    shooter0SparkMax.burnFlash();
-    shooter1SparkMax.burnFlash();
+    shooterTopFixedSparkMax.burnFlash();
+    shooterBottomFixedSparkMax.burnFlash();
+    shooterLeftPivotSparkMax.burnFlash();
+    shooterRightPivotSparkMax.burnFlash();
+    shooterFeederSparkMax.burnFlash();
   }
 
   @Override
   public void updateInputs(ShooterIOInputs inputs) {
-    // TODO Auto-generated method stub
-    inputs.shooter0AppliedVolts =
-        shooter0SparkMax.getAppliedOutput() * shooter0SparkMax.getBusVoltage();
-    inputs.shooter0CurrentAmps = new double[] {shooter0SparkMax.getOutputCurrent()};
+    inputs.shooterTopFixedAppliedVolts =
+        shooterTopFixedSparkMax.getAppliedOutput() * shooterTopFixedSparkMax.getBusVoltage();
+    inputs.shooterTopFixedVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooterTopFixedEncoder.getVelocity());
+    inputs.shooterTopFixedCurrentAmps = new double[] {shooterTopFixedSparkMax.getOutputCurrent()};
 
-    inputs.shooter1VelocityRadPerSec =
-        Units.rotationsPerMinuteToRadiansPerSecond(shooter1Encoder.getVelocity());
-    inputs.shooter1AppliedVolts =
-        shooter1SparkMax.getAppliedOutput() * shooter1SparkMax.getBusVoltage();
-    inputs.shooter1CurrentAmps = new double[] {shooter1SparkMax.getOutputCurrent()};
+    inputs.shooterBottomFixedAppliedVolts =
+        shooterBottomFixedSparkMax.getAppliedOutput() * shooterBottomFixedSparkMax.getBusVoltage();
+    inputs.shooterBottomFixedVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooterBottomFixedEncoder.getVelocity());
+    inputs.shooterBottomFixedCurrentAmps = new double[] {shooterBottomFixedSparkMax.getOutputCurrent()};
 
-    inputs.shooter1VelocityRadPerSec =
-        Units.rotationsPerMinuteToRadiansPerSecond(shooter1Encoder.getVelocity());
+    inputs.shooterLeftPivotAppliedVolts =
+        shooterLeftPivotSparkMax.getAppliedOutput() * shooterLeftPivotSparkMax.getBusVoltage();
+    inputs.shooterLeftPivotVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooterLeftPivotEncoder.getVelocity());
+    inputs.shooterLeftPivotCurrentAmps = new double[] {shooterLeftPivotSparkMax.getOutputCurrent()};
+
+    inputs.shooterRightPivotAppliedVolts =
+        shooterRightPivotSparkMax.getAppliedOutput() * shooterRightPivotSparkMax.getBusVoltage();
+    inputs.shooterRightPivotVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooterRightPivotEncoder.getVelocity());
+    inputs.shooterRightPivotCurrentAmps = new double[] {shooterRightPivotSparkMax.getOutputCurrent()};
+
+    inputs.shooterFeederAppliedVolts =
+        shooterFeederSparkMax.getAppliedOutput() * shooterFeederSparkMax.getBusVoltage();
+    inputs.shooterFeederVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(shooterFeederEncoder.getVelocity());
+    inputs.shooterFeederCurrentAmps = new double[] {shooterFeederSparkMax.getOutputCurrent()};
   }
 
   @Override
-  public void setShooterVoltage(double volts) {
-    shooter0SparkMax.setVoltage(volts);
+  public void setShooterSpeedVoltage(double topVolts, double bottomVolts){
+    shooterTopFixedSparkMax.setVoltage(topVolts);
+    shooterBottomFixedSparkMax.setVoltage(bottomVolts);
   }
 
   @Override
-  public void stop() {
-    shooter0SparkMax.setVoltage(0);
+  public void setShooterPositionVoltage(double volts){
+    shooterLeftPivotSparkMax.setVoltage(volts);
+  }
+
+  @Override
+  public void setShooterFeederVoltage(double volts){
+    shooterFeederSparkMax.setVoltage(volts);
+  }
+
+  @Override
+  public void stop(){
+    shooterTopFixedSparkMax.setVoltage(0d);
+    shooterBottomFixedSparkMax.setVoltage(0d);
+    shooterLeftPivotSparkMax.setVoltage(0d);
+    shooterFeederSparkMax.setVoltage(0d);
   }
 }

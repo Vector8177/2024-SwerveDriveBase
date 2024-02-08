@@ -24,6 +24,8 @@ package frc.robot;
 public final class Constants {
   public static final Mode currentMode = Mode.REAL;
 
+  public static final int placeHolderMotorID = Integer.MAX_VALUE;
+
   public static enum Mode {
     /** Running on a real robot. */
     REAL,

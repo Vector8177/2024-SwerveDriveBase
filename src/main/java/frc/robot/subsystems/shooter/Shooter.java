@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
@@ -11,21 +10,40 @@ public class Shooter extends SubsystemBase {
     this.io = io;
   }
 
-  public void setMotor(double speed) {
-    io.setShooterVoltage(speed);
+  public void setShooterSpeed(double speed){
+    //TODO
   }
 
-  public double getVelocity() {
-    return inputs.shooter0VelocityRadPerSec;
+  public void setShooterPosition(double rad){
+    //TODO
   }
 
-  public void stop() {
-    io.stop();
+  public void setShooterFeeder(double speed){
+    //TODO
+  }
+
+  public double getShooterTopFixedVelocity(){
+    return inputs.shooterTopFixedVelocityRadPerSec;
+  }
+
+  public double getShooterBottomFixedVelocity(){
+    return inputs.shooterBottomFixedVelocityRadPerSec;
+  }
+
+  public double getShooterPositionVelocity(){
+    return (inputs.shooterLeftPivotVelocityRadPerSec + inputs.shooterRightPivotVelocityRadPerSec) / 2d;
+  }
+
+  public double getShooterFeederVelocity(){
+    return inputs.shooterFeederVelocityRadPerSec;
   }
 
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Intake", inputs);
+    //TODO
+  }
+
+  public void stop() {
+    io.stop();
   }
 }

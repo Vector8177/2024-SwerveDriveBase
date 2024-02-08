@@ -21,7 +21,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.swerve.Swerve;
 import java.util.function.DoubleSupplier;
 
 public class DriveCommands {
@@ -33,7 +33,7 @@ public class DriveCommands {
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
    */
   public static Command joystickDrive(
-      Drive drive,
+      Swerve swerve,
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier) {
@@ -61,13 +61,13 @@ public class DriveCommands {
                   .getTranslation();
 
           // Convert to field relative speeds & send command
-          drive.runVelocity(
+          swerve.runVelocity(
               ChassisSpeeds.fromFieldRelativeSpeeds(
-                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
-                  omega * drive.getMaxAngularSpeedRadPerSec(),
-                  drive.getRotation()));
+                  linearVelocity.getX() * swerve.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getY() * swerve.getMaxLinearSpeedMetersPerSec(),
+                  omega * swerve.getMaxAngularSpeedRadPerSec(),
+                  swerve.getRotation()));
         },
-        drive);
+        swerve);
   }
 }

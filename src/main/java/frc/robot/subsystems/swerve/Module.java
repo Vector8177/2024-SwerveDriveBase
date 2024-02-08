@@ -11,7 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -48,18 +48,18 @@ public class Module {
       case REAL:
       case REPLAY:
         driveFeedforward = new SimpleMotorFeedforward(0.1, 0.13);
-        driveFeedback = new PIDController(0.05, 0.0, 0.0);
-        turnFeedback = new PIDController(7, 0.0, 0.0);
+        driveFeedback = new PIDController(0.05, 0d, 0d);
+        turnFeedback = new PIDController(7d, 0d, 0d);
         break;
       case SIM:
-        driveFeedforward = new SimpleMotorFeedforward(0.0, 0.13);
-        driveFeedback = new PIDController(0.1, 0.0, 0.0);
-        turnFeedback = new PIDController(10.0, 0.0, 0.0);
+        driveFeedforward = new SimpleMotorFeedforward(0d, 0.13);
+        driveFeedback = new PIDController(0.1, 0d, 0d);
+        turnFeedback = new PIDController(10d, 0d, 0d);
         break;
       default:
-        driveFeedforward = new SimpleMotorFeedforward(0.0, 0.0);
-        driveFeedback = new PIDController(0.0, 0.0, 0.0);
-        turnFeedback = new PIDController(0.0, 0.0, 0.0);
+        driveFeedforward = new SimpleMotorFeedforward(0d, 0d);
+        driveFeedback = new PIDController(0d, 0d, 0d);
+        turnFeedback = new PIDController(0d, 0d, 0d);
         break;
     }
 
@@ -73,7 +73,7 @@ public class Module {
 
     // On first cycle, reset relative turn encoder
     // Wait until absolute angle is nonzero in case it wasn't initialized yet
-    if (turnRelativeOffset == null && inputs.turnAbsolutePosition.getRadians() != 0.0) {
+    if (turnRelativeOffset == null && inputs.turnAbsolutePosition.getRadians() != 0d) {
       // turnRelativeOffset = inputs.turnAbsolutePosition.minus(inputs.turnPosition);
       turnRelativeOffset = inputs.turnAbsolutePosition.minus(inputs.turnPosition);
       DriverStation.reportError(
@@ -137,8 +137,8 @@ public class Module {
 
   /** Disables all outputs to motors. */
   public void stop() {
-    io.setTurnVoltage(0.0);
-    io.setDriveVoltage(0.0);
+    io.setTurnVoltage(0d);
+    io.setDriveVoltage(0d);
 
     // Disable closed loop control for turn and drive
     angleSetpoint = null;

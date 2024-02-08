@@ -11,7 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -32,8 +32,8 @@ public class ModuleIOSim implements ModuleIO {
   private DCMotorSim turnSim = new DCMotorSim(DCMotor.getNEO(1), 150.0 / 7.0, 0.004);
 
   private final Rotation2d turnAbsoluteInitPosition = new Rotation2d(Math.random() * 2.0 * Math.PI);
-  private double driveAppliedVolts = 0.0;
-  private double turnAppliedVolts = 0.0;
+  private double driveAppliedVolts = 0d;
+  private double turnAppliedVolts = 0d;
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
