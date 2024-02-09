@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 public class HoodIOSim implements HoodIO {
   private static final double LOOP_PERIOD_SECS = 0.02;
 
-  private DCMotorSim hoodPivotSim = new DCMotorSim(DCMotor.getNeo550(1), 1, 0.025);
+  private DCMotorSim hoodPivotSim = new DCMotorSim(DCMotor.getNeo(1), 1, 0.025);
 
   private double hoodPivotAppliedVolts = 0d;
 
