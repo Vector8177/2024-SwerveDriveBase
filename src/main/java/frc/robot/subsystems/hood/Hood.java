@@ -23,7 +23,7 @@ public class Hood extends SubsystemBase {
     // TODO
   }
 
-  public void stop(){
+  public void stop() {
     io.stop();
-}
+  }
 }

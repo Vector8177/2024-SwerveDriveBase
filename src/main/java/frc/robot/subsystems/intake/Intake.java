@@ -10,11 +10,7 @@ public class Intake extends SubsystemBase {
     this.io = io;
   }
 
-  public void setIntakePosition(double rad) {
-    // TODO
-  }
-
-  public void setInakeFeederSpeed(double speed) {
+  public void setIndexerSpeed(double speed) {
     // TODO
   }
 
@@ -23,7 +19,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double getFeederVelocity() {
-    return inputs.intakeFeederVelocityRadPerSec;
+    return inputs.indexerVelocityRadPerSec;
   }
 
   @Override
@@ -31,7 +27,7 @@ public class Intake extends SubsystemBase {
     // TODO
   }
 
-  public void stop(){
+  public void stop() {
     io.stop();
-}
+  }
 }

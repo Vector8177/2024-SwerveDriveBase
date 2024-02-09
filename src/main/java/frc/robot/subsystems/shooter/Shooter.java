@@ -10,37 +10,37 @@ public class Shooter extends SubsystemBase {
     this.io = io;
   }
 
-  public void setShooterSpeed(double speed){
-    //TODO
+  public void setShooterSpeed(double speed) {
+    // TODO
   }
 
-  public void setShooterPosition(double rad){
-    //TODO
+  public void setShooterPosition(double rad) {
+    // TODO
   }
 
-  public void setShooterFeeder(double speed){
-    //TODO
+  public void setShooterIndexer(double speed) {
+    // TODO
   }
 
-  public double getShooterTopFixedVelocity(){
+  public double getShooterTopFixedVelocity() {
     return inputs.shooterTopFixedVelocityRadPerSec;
   }
 
-  public double getShooterBottomFixedVelocity(){
+  public double getShooterBottomFixedVelocity() {
     return inputs.shooterBottomFixedVelocityRadPerSec;
   }
 
-  public double getShooterPositionVelocity(){
+  public double getShooterPositionVelocity() {
     return inputs.shooterPivotVelocityRadPerSec;
   }
 
-  public double getShooterFeederVelocity(){
-    return inputs.shooterFeederVelocityRadPerSec;
+  public double getShooterIndexerVelocity() {
+    return inputs.shooterIndexerVelocityRadPerSec;
   }
 
   @Override
   public void periodic() {
-    //TODO
+    // TODO
   }
 
   public void stop() {
