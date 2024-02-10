@@ -166,18 +166,14 @@ public class Swerve extends SubsystemBase {
         lastModulePositions[moduleIndex] = modulePositions[moduleIndex];
       }
 
-      var twist = kinematics.toTwist2d(moduleDeltas);
-
       // Update gyro angle
       if (gyroInputs.connected) {
         // Use the real gyro angle
         rawGyroRotation = gyroInputs.odometryYawPositions[i];
       } else {
         // Use the angle delta from the kinematics and module deltas
-        twist =
-            new Twist2d(
-                twist.dx, twist.dy, -gyroInputs.yawPosition.minus(rawGyroRotation).getRadians());
-        rawGyroRotation = gyroInputs.yawPosition;
+        Twist2d twist = kinematics.toTwist2d(moduleDeltas);
+        rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
       }
 
       // Apply update
