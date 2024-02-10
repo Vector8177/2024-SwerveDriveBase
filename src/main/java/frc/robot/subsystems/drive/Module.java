@@ -19,7 +19,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
@@ -36,7 +35,6 @@ public class Module {
   private Rotation2d angleSetpoint = null; // Setpoint for closed loop control, null for open loop
   private Double speedSetpoint = null; // Setpoint for closed loop control, null for open loop
   private Rotation2d turnRelativeOffset = null; // Relative + Offset = Absolute
-  private double lastPositionMeters = 0.0; // Used for delta calculation
 
   public Module(ModuleIO io, int index) {
     this.io = io;
@@ -49,7 +47,7 @@ public class Module {
       case REPLAY:
         driveFeedforward = new SimpleMotorFeedforward(0.1, 0.13);
         driveFeedback = new PIDController(0.05, 0.0, 0.0);
-        turnFeedback = new PIDController(7, 0.0, 0.0);
+        turnFeedback = new PIDController(7.0, 0.0, 0.0);
         break;
       case SIM:
         driveFeedforward = new SimpleMotorFeedforward(0.0, 0.13);
@@ -74,18 +72,7 @@ public class Module {
     // On first cycle, reset relative turn encoder
     // Wait until absolute angle is nonzero in case it wasn't initialized yet
     if (turnRelativeOffset == null && inputs.turnAbsolutePosition.getRadians() != 0.0) {
-      // turnRelativeOffset = inputs.turnAbsolutePosition.minus(inputs.turnPosition);
       turnRelativeOffset = inputs.turnAbsolutePosition.minus(inputs.turnPosition);
-      DriverStation.reportError(
-          "Drive/Module"
-              + Integer.toString(index)
-              + "/TurnROffset:    "
-              + turnRelativeOffset.getRadians()
-              + "   "
-              + inputs.turnAbsolutePosition
-              + "    "
-              + inputs.turnPosition,
-          false);
     }
 
     // Run closed loop turn control
@@ -151,14 +138,14 @@ public class Module {
     io.setTurnBrakeMode(enabled);
   }
 
+  /** Returns the current turn angle of the module. */
   public Rotation2d getAngle() {
     if (turnRelativeOffset == null) {
       return new Rotation2d();
     } else {
-      return new Rotation2d(inputs.turnPosition.plus(turnRelativeOffset).getRadians() % Math.PI);
+      return inputs.turnPosition.plus(turnRelativeOffset);
     }
   }
-  /** Returns the current turn angle of the module. */
 
   /** Returns the current drive position of the module in meters. */
   public double getPositionMeters() {
@@ -173,13 +160,6 @@ public class Module {
   /** Returns the module position (turn angle and drive position). */
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(getPositionMeters(), getAngle());
-  }
-
-  /** Returns the module position delta since the last call to this method. */
-  public SwerveModulePosition getPositionDelta() {
-    var delta = new SwerveModulePosition(getPositionMeters() - lastPositionMeters, getAngle());
-    lastPositionMeters = getPositionMeters();
-    return delta;
   }
 
   /** Returns the module state (turn angle and drive velocity). */

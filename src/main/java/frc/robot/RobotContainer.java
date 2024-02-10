@@ -14,7 +14,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -22,17 +21,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.FeedForwardCharacterization;
-import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSparkMax;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
@@ -45,8 +41,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Shooter shooter;
-  // private final Flywheel flywheel;
+  //   private final Flywheel flywheel;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -68,7 +63,6 @@ public class RobotContainer {
                 new ModuleIOSparkMax(1),
                 new ModuleIOSparkMax(2),
                 new ModuleIOSparkMax(3));
-        shooter = new Shooter(new ShooterIOSparkMax());
         // flywheel = new Flywheel(new FlywheelIOSparkMax());
         // drive = new Drive(
         // new GyroIOPigeon2(),
@@ -88,7 +82,6 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        shooter = new Shooter(new ShooterIOSparkMax());
         // flywheel = new Flywheel(new FlywheelIOSim());
         break;
 
@@ -101,7 +94,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        shooter = new Shooter(new ShooterIOSparkMax());
         // flywheel = new Flywheel(new FlywheelIO() {});
         break;
     }
@@ -112,17 +104,19 @@ public class RobotContainer {
     //     Commands.startEnd(
     //             () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
     //         .withTimeout(5.0));
-    NamedCommands.registerCommand(
-        "Run Intake Max",
-        Commands.startEnd(() -> shooter.setMotor(1.0), shooter::stop, shooter).withTimeout(10.0));
-
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
-    // Set up feedforward characterization
+    // Set up SysId routines
     autoChooser.addOption(
-        "Drive FF Characterization",
-        new FeedForwardCharacterization(
-            drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
+        "Drive SysId (Quasistatic Forward)",
+        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Reverse)",
+        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -138,9 +132,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -applyDeadband(controller.getLeftY()),
+            () -> -applyDeadband(controller.getLeftX()),
+            () -> -applyDeadband(controller.getRightX())));
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     controller
         .b()
@@ -151,12 +145,6 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-
-    shooter.setDefaultCommand(
-        ShooterCommands.triggerShoot(
-            shooter,
-            () -> controller.getLeftTriggerAxis(),
-            () -> controller.getRightTriggerAxis()));
     // controller
     //     .a()
     //     .whileTrue(
@@ -170,7 +158,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return autoChooser.get();
-    return null;
+    return autoChooser.get();
+  }
+
+  private double applyDeadband(double controllerValue) {
+    if (controllerValue < .3 && controllerValue > -.3) {
+      return 0;
+    }
+    return controllerValue;
   }
 }

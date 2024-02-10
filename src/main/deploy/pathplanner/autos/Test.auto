@@ -1,20 +1,14 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.9080518161036322,
-      "y": 6.9872307017341315
-    },
-    "rotation": 180.0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Run Intake Max"
+            "pathName": "Bilbo"
           }
         }
       ]
